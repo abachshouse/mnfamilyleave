@@ -53,6 +53,14 @@
             font-size: 18px;
             font-weight: bold;
         }
+        .disclaimer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +75,16 @@
         <button onclick="calculateBenefit()">Calculate Benefit</button>
         <div id="result"></div>
         <div id="totalBenefit"></div>
+
+        <div class="disclaimer">
+            <p><strong>Disclaimer:</strong> The Minnesota Paid Leave program does not take effect until 2026. This calculator provides an estimated benefit based on the current proposed calculation logic:</p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>90% of weekly income up to 50% of the state average weekly wage</li>
+                <li>66% of weekly income between 50% and 100% of the state average weekly wage</li>
+                <li>55% of weekly income exceeding the state average weekly wage</li>
+                <li>Weekly benefits are capped at $1,377 (based on 2023 Average Weekly wage)</li>
+            </ul>
+        </div>
     </div>
 
     <script>
