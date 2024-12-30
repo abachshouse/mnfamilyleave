@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minnesota Paid Leave Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #0078d7;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Minnesota Paid Leave Benefit Calculator</h1>
+        <label for="income">Enter your weekly income ($):</label>
+        <input type="number" id="income" placeholder="e.g., 1000">
+        
+        <label for="leaveWeeks">Enter length of leave (weeks, max 20, default 12):</label>
+        <input type="number" id="leaveWeeks" placeholder="e.g., 12" value="12" min="1" max="20">
+        
+        <button onclick="calculateBenefit()">Calculate Benefit</button>
+        <div id="result"></div>
+        <div id="totalBenefit"></div>
+    </div>
+
+    <script>
+        function calculateBenefit() {
+            const income = parseFloat(document.getElementById('income').value);
+            const leaveWeeks = parseInt(document.getElementById('leaveWeeks').value) || 12;
+            const averageWeeklyWage = 1337;
+            const weeklyBenefitCap = 1377; // Cap for 2023 wages
+            let benefit = 0;
+
+            if (isNaN(income) || income <= 0) {
+                document.getElementById('result').innerText = 'Please enter a valid income value.';
+                document.getElementById('totalBenefit').innerText = '';
+                return;
+            }
+
+            if (leaveWeeks < 1 || leaveWeeks > 20) {
+                document.getElementById('result').innerText = 'Please enter a valid leave length between 1 and 20 weeks.';
+                document.getElementById('totalBenefit').innerText = '';
+                return;
+            }
+
+            const halfAvgWage = averageWeeklyWage * 0.5;
+            const fullAvgWage = averageWeeklyWage;
+
+            if (income <= halfAvgWage) {
+                benefit = income * 0.9;
+            } else {
+                benefit = halfAvgWage * 0.9;
+                if (income <= fullAvgWage) {
+                    benefit += (income - halfAvgWage) * 0.66;
+                } else {
+                    benefit += (fullAvgWage - halfAvgWage) * 0.66;
+                    benefit += (income - fullAvgWage) * 0.55;
+                }
+            }
+
+            // Apply weekly benefit cap
+            if (benefit > weeklyBenefitCap) {
+                benefit = weeklyBenefitCap;
+            }
+
+            const totalBenefit = benefit * leaveWeeks;
+
+            document.getElementById('result').innerText = `Your estimated weekly benefit is: $${benefit.toFixed(2)}`;
+            document.getElementById('totalBenefit').innerText = `Your total benefit for ${leaveWeeks} weeks is: $${totalBenefit.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
